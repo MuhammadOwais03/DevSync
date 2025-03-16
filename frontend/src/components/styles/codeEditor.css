@@ -1,0 +1,85 @@
+.editor-container {
+    
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    gap: 2rem;
+    justify-content: flex-start;
+    
+  }
+
+.coding {
+    text-align: center;
+    padding: 10px;
+    background: #1e1e1e;
+    border-radius: 8px;
+    /* width: 60%; */
+    flex: 1;
+    margin: auto;
+    height: 95%;
+}
+  
+  .language-selector {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #282c34;
+    color: white;
+    font-size: 16px;
+  }
+  
+  .run-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+ pre {
+  color: white;
+ }
+
+.output-container {
+    
+    
+    
+    
+    padding: 1rem;
+    
+    height: 100%;
+    flex: 1;
+    
+    
+  }
+  
+  .output {
+    margin-top: 10px;
+    font-weight: bold;
+    color: white;
+    margin-top: 2rem;
+}
+
+.remote-cursor {
+  position: absolute;
+  width: 2px;
+  height: 16px;
+  
+  opacity: 0.8;
+  z-index: 10;
+}
+
+.cursor-widget {
+  position: absolute;
+  font-size: 6px;
+  font-weight: bold;
+  color: white;
+  background-color: black;
+  padding: 2px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+  
