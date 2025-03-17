@@ -1,25 +1,38 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-// import AdminRoutes from "./routes/AdminRoutes.jsx";
 import UserRoutes from "./routes/userRoutes.jsx"; // For regular users
 import { ToastProvider } from "./context/ToastContext.jsx"; 
 import "./index.css";
-import { io } from "socket.io-client";
-import { useEffect } from "react";
-
+import { useAuthStore } from "./store/useAuthStore.js";
+import { useEffect, useState } from "react";
 
 function App() {
+  const { isAuthenticated, checkAuth } = useAuthStore();
+  const [authChecked, setAuthChecked] = useState(false); 
 
+  useEffect(() => {
+    const fetchAuth = async () => {
+      await checkAuth();  
+      setAuthChecked(true); 
+    };
+
+    fetchAuth();
+  }, [checkAuth]);
+
+  useEffect(() => {
+    console.log("isAuthenticated:", isAuthenticated);
+  }, [isAuthenticated]);
+
+  
+  if (!authChecked) {
+    return <div>Loading...</div>;  
+  }
 
   return (
     <ToastProvider>
       <Router>
         <Routes>
-          {/* Redirect root path */}
-          <Route path="/" element={<Navigate to="/user/home" replace />} />    
-          {/* Admin routes */}
-          {/* <Route path="/admin/*" element={<AdminRoutes />} /> */}
-
-          {/* User routes */}
+          
+          <Route path="/" element={<Navigate to={isAuthenticated ? "/user/home" : "/user/"} replace />} />
           <Route path="/user/*" element={<UserRoutes />} />
         </Routes>
       </Router>

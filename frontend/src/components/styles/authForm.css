@@ -1,0 +1,196 @@
+/* AuthForm.css - Light & Dark Theme */
+
+:root {
+    --bg-light: #f3f4f6;
+    --text-light: #1f2937;
+    --input-bg-light: #ffffff;
+    --button-bg-light: #2563eb;
+    --button-hover-light: #1e40af;
+    --border-light: #d1d5db;
+  
+    --bg-dark: #1a202c;
+    --text-dark: #e2e8f0;
+    --input-bg-dark: #2d3748;
+    --button-bg-dark: #4a90e2;
+    --button-hover-dark: #357ab7;
+    --border-dark: #4a5568;
+  }
+  
+  .auth-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-light);
+    transition: background-color 0.3s ease;
+  }
+  
+  .auth-container.dark {
+    background-color: var(--bg-dark);
+  }
+  
+  .auth-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 24px;
+    background-color: var(--input-bg-light);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .auth-container.dark .auth-box {
+    background-color: var(--input-bg-dark);
+  }
+  
+  .auth-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 16px;
+    color: var(--text-light);
+  }
+  
+  .auth-container.dark .auth-title {
+    color: var(--text-dark);
+  }
+  
+  .auth-social {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .auth-social-btn {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .auth-social-btn.twitter {
+    background-color: #1da1f2;
+  }
+  
+  .auth-separator {
+    display: flex;
+    align-items: center;
+    margin: 16px 0;
+  }
+  
+  .auth-separator hr {
+    flex: 1;
+    border: none;
+    height: 1px;
+    background-color: var(--border-light);
+  }
+  
+  .auth-container.dark .auth-separator hr {
+    background-color: var(--border-dark);
+  }
+  
+  .auth-separator p {
+    margin: 0 8px;
+    color: var(--text-light);
+    font-size: 14px;
+  }
+  
+  .auth-container.dark .auth-separator p {
+    color: var(--text-dark);
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .auth-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: var(--input-bg-light);
+    color: var(--text-light);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .auth-container.dark .auth-input {
+    background-color: var(--input-bg-dark);
+    border: 1px solid var(--border-dark);
+    color: var(--text-dark);
+  }
+  
+  .auth-button {
+    width: 100%;
+    background-color: var(--button-bg-light);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  
+  .auth-button:hover {
+    background-color: var(--button-hover-light);
+  }
+  
+  .auth-container.dark .auth-button {
+    background-color: var(--button-bg-dark);
+  }
+  
+  .auth-container.dark .auth-button:hover {
+    background-color: var(--button-hover-dark);
+  }
+  
+  .auth-toggle {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--text-light);
+  }
+  
+  .auth-container.dark .auth-toggle {
+    color: var(--text-dark);
+  }
+  
+  .auth-toggle-btn {
+    color: var(--button-bg-light);
+    font-weight: bold;
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-left: 4px;
+  }
+  
+  .auth-container.dark .auth-toggle-btn {
+    color: var(--button-bg-dark);
+  }
+  
+  .dark-mode-toggle {
+    text-align: right;
+    margin-bottom: 10px;
+  }
+  
+  .dark-mode-toggle button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .auth-container.dark .dark-mode-toggle button {
+    color: var(--text-dark);
+  }
+  
