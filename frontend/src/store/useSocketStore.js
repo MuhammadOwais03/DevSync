@@ -15,27 +15,32 @@ export const useSocketStore = create((set, get) => ({
   input: "",
   userInput: "",
   language: "python",
-  output:"",
+  output: "",
   allSocketUser: {},
+  name: "",
+  room: "",
+  rooms_user: [],
 
   connectSocket: () => {
-    console.log(get().socket)
-    
-    if (!get().socket) {  // ✅ Prevent multiple connections
-      const newSocket = io(baseUrl, { withCredentials: true, query: { userId: "owais" } });
-  
-      newSocket.on("connect", (socket) => {
-        
-        set({ socket: newSocket }); 
+    console.log(get().socket);
+
+    if (!get().socket) {
+      // ✅ Prevent multiple connections
+      const newSocket = io(baseUrl, {
+        withCredentials: true,
+        query: { userId: "owais" },
       });
-  
+
+      newSocket.on("connect", (socket) => {
+        set({ socket: newSocket });
+      });
+
       newSocket.on("disconnect", (reason) => {
         console.log("Socket disconnected:", reason);
         set({ socket: null });
       });
     }
   },
-  
 
   setCode: (value) => {
     set({ code: value });
@@ -50,17 +55,26 @@ export const useSocketStore = create((set, get) => ({
   },
 
   setOutput: (value, type) => {
-    console.log('type', type)
+    console.log("type", type);
     set((state) => {
-        if (type === "input" || type === 'output') {
-            return { output: state.output + value + "\n" }; // Append for input type
-        }
-        return { output: value }; // Overwrite for other cases
+      if (type === "input" || type === "output") {
+        return { output: state.output + value + "\n" }; // Append for input type
+      }
+      return { output: value }; // Overwrite for other cases
     });
-},
+  },
 
-  
+  setName: (value) => {
+    set({ name: value });
+  },
 
+  setRoom: (value) => {
+    set({ room: value });
+  }
+  ,
+  setRooms_user: (value) => {
+    set({ rooms_user: value });
+  },
 
   disconnectSocket: () => {
     const { socket } = get();

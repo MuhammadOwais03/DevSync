@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Editor from "@monaco-editor/react";
 import { useSocketStore } from "../store/useSocketStore";
 
-const CodeEditor = () => {
+const CodeEditor = ({ room }) => {
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [cursors, setCursors] = useState({});
   const editorRef = useRef(null);
@@ -20,12 +20,38 @@ const CodeEditor = () => {
     setOutput,
   } = useSocketStore();
 
-  // Connect socket only once
   useEffect(() => {
     if (!socket) {
       connectSocket();
+      return;
     }
-  }, [socket]);
+
+    console.log("Joining room:", room);
+    socket.emit("join_room", { name: "name_", room: room });
+
+    const handleRoomJoined = (msg) => {
+      console.log("Room joined:", msg);
+
+      // Ensure `checkCode` is emitted only after the room is joined
+      console.log("Requesting code check...");
+      socket.emit("checkCode", room);
+    };
+
+    const handleAcceptCode = (code) => {
+      console.log("Code received:", code);
+      setCode(code);
+    };
+
+    // Listen for events
+    socket.on("room_joined", handleRoomJoined);
+    socket.on("acceptCode1", handleAcceptCode);
+
+    // Cleanup function to remove listeners when the component unmounts
+    return () => {
+      socket.off("room_joined", handleRoomJoined);
+      socket.off("acceptCode1", handleAcceptCode);
+    };
+  }, [socket, room]); 
 
   // Setup socket listeners once
   useEffect(() => {
@@ -76,11 +102,11 @@ const CodeEditor = () => {
   const runCode = () => {
     console.log("Running Code...");
     setOutput("", null);
-    socket.emit("runCode", { code, language });
+    socket.emit("runCode", { code, language, room });
   };
 
   const sendInput = () => {
-    socket.emit("sendInput", userInput);
+    socket.emit("sendInput", userInput, room);
     setUserInput("");
     setWaitingForInput(false);
   };
@@ -88,7 +114,7 @@ const CodeEditor = () => {
   const codeOnChange = (value) => {
     setCode(value);
     console.log(value);
-    socket.emit("codeChange", value, socket.id);
+    socket.emit("codeChange", value, socket.id, room);
   };
 
   const handleEditorDidMount = (editor, monaco) => {

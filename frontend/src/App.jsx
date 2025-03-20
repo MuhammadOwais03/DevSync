@@ -4,10 +4,18 @@ import { ToastProvider } from "./context/ToastContext.jsx";
 import "./index.css";
 import { useAuthStore } from "./store/useAuthStore.js";
 import { useEffect, useState } from "react";
+import { useSocketStore } from "./store/useSocketStore.js";
 
 function App() {
   const { isAuthenticated, checkAuth } = useAuthStore();
   const [authChecked, setAuthChecked] = useState(false); 
+
+  const { connectSocket } = useSocketStore();
+
+  useEffect(() => {
+    connectSocket();
+  }
+  , []);
 
   useEffect(() => {
     const fetchAuth = async () => {
@@ -23,16 +31,17 @@ function App() {
   }, [isAuthenticated]);
 
   
-  if (!authChecked) {
-    return <div>Loading...</div>;  
-  }
+  // if (!authChecked) {
+  //   return <div>Loading...</div>;  
+  // }
 
   return (
     <ToastProvider>
       <Router>
         <Routes>
           
-          <Route path="/" element={<Navigate to={isAuthenticated ? "/user/home" : "/user/"} replace />} />
+          {/* <Route path="/" element={<Navigate to={isAuthenticated ? "/user/home" : "/user/"} replace />} /> */}
+          <Route path="/" element={<Navigate to="/user/create"/>} />
           <Route path="/user/*" element={<UserRoutes />} />
         </Routes>
       </Router>

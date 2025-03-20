@@ -1,37 +1,42 @@
 import jwt from 'jsonwebtoken';
-import { generateAccessTokenFromRefreshToken } from '../utils/token.utils';
-import asyncHandler from '../utils/asyncHandler';
-import { ApiResponse } from '../utils/ApiResponse';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import userSchema from '../models/user.models.js';
 
 const verifyToken = asyncHandler(async (req, res, next) => {
-    const token = req.header('Authorization')?.split(' ')[1]; 
-    if (!token) return res.status(403).json(new ApiResponse(403, null, 'Access denied'));
+
+    // console.log(req)
+    // Access the token from cookies
+    const token = req.cookies.accessToken;  // Use req.cookies to access cookies
+
+    if (!token) return res.status(200).json(new ApiResponse(403, null, 'Access denied'));
 
     try {
+        // Verify token
         const payload = jwt.verify(token, process.env.ACCESS_SECRET_KEY); 
-        req.user = payload; 
-        return next(); 
-    } catch (err) {
-        
-        const refreshToken = req.cookies?.refreshToken;
-        const newAccessToken = await generateAccessTokenFromRefreshToken(refreshToken); 
 
-        
-        if (newAccessToken instanceof ApiResponse) {
+        if (!payload) {
             return res.status(401).json(
-                new ApiResponse(401, newAccessToken.data, newAccessToken.message)
+                new ApiResponse(401, null, 'Invalid Token')
             );
         }
 
-        
-        const options = {
-            httpOnly: true,
-            secure: false,
-        };
+        // Find user and attach to req object
+        const user = await userSchema.findById(payload.userId).select('-password');
 
-        res.cookie('accessToken', newAccessToken, options); 
-        req.user = jwt.verify(newAccessToken, process.env.ACCESS_SECRET_KEY); 
-        return next(); 
+        if (!user) {
+            return res.status(401).json(
+                new ApiResponse(401, null, 'User not found')
+            );
+        }
+
+        req.user = user;  // Attach user to the request object
+        next();  // Pass control to the next middleware
+    } catch (err) {
+        console.log(err);
+        return res.status(404).json(
+            new ApiResponse(404, null, 'Error in Validating token')
+        );
     }
 });
 

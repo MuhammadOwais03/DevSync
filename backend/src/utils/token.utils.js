@@ -15,6 +15,8 @@ export const generateToken = async (userID, username) => {
         { expiresIn: process.env.REFRESH_EXPIRES }
     );
 
+    console.log("Refresh Token: ", refreshToken);
+
     return { accessToken, refreshToken }; 
 };
 
